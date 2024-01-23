@@ -1,6 +1,6 @@
 using System;
 
-// PASO 3: Crear mla clase 'Fraction'
+// PASO 3: Crear la clase 'Fraction'
 public class Fraction
 {
     // atributos para los números superior e inferior
