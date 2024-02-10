@@ -40,8 +40,8 @@ public class GoalManager
         }
 
         goals.Add(goal);
-        Console.WriteLine($"Goal '{name}' created successfully!\n");
-        Console.WriteLine($"You have {totalPoints} points.");
+        Console.WriteLine($"Goal '{name}' created successfully!");
+        Console.WriteLine($"You have {totalPoints} points.\n");
     }
 
     public void ListGoals()
@@ -50,15 +50,15 @@ public class GoalManager
         for (int i = 0; i < goals.Count; i++)
         {
             Console.WriteLine($"{i + 1}. [{(goals[i].IsCompleted ? 'x' : ' ')}] {goals[i].Name} ({goals[i].Description})" +
-                              $"{(goals[i] is ChecklistGoal ? $" - Currently completed {((ChecklistGoal)goals[i]).TimesCompleted}/{((ChecklistGoal)goals[i]).TimesToComplete}" : "")}");
+                              $"{(goals[i] is ChecklistGoal ? $" —— Currently completed {((ChecklistGoal)goals[i]).TimesCompleted}/{((ChecklistGoal)goals[i]).TimesToComplete}" : "")}");
         }
-        Console.WriteLine($"\nYou have {totalPoints} points.");
+        Console.WriteLine($"You have {totalPoints} points.\n");
     }
 
     public void RecordEvent()
     {
         ListGoals();
-        Console.Write("\nWhich goal did you accomplish? ");
+        Console.Write("Which goal did you accomplish? ");
         int index = int.Parse(Console.ReadLine()) - 1;
 
         if (index >= 0 && index < goals.Count && !goals[index].IsCompleted)
