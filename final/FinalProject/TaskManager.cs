@@ -61,48 +61,51 @@ class TaskManager
     }
 
     static void CreateTask()
-{
-    Console.Write("Name of the task: ");
-    string taskName = Console.ReadLine();
-
-    string hasDeadlineInput;
-    bool hasValidDeadlineInput;
-
-    do
     {
-        Console.Write("Deadline yes/no? (yes/no): ");
-        hasDeadlineInput = Console.ReadLine().ToLower();
-        hasValidDeadlineInput = hasDeadlineInput == "yes" || hasDeadlineInput == "no";
+        Console.Write("Name of the task: ");
+        string taskName = Console.ReadLine();
 
-        if (!hasValidDeadlineInput)
+        string hasDeadlineInput;
+        bool hasValidDeadlineInput;
+
+        do
         {
-            Console.WriteLine("Invalid input. Please enter 'yes' or 'no'.");
+            Console.Write("Deadline yes/no? (yes/no): ");
+            hasDeadlineInput = Console.ReadLine().ToLower();
+            hasValidDeadlineInput = hasDeadlineInput == "yes" || hasDeadlineInput == "no";
+
+            if (!hasValidDeadlineInput)
+            {
+                Console.WriteLine("Invalid input. Please enter 'yes' or 'no'.");
+            }
+
+        } while (!hasValidDeadlineInput);
+
+        bool hasDeadline = hasDeadlineInput == "yes";
+        DateTime deadline = DateTime.MinValue;
+
+        if (hasDeadline)
+        {
+            Console.Write("Enter the deadline (format: MM/dd/yyyy HH:mm): ");
+            string deadlineInput = Console.ReadLine();
+
+            if (DateTime.TryParseExact(deadlineInput, "MM/dd/yyyy HH:mm", null, System.Globalization.DateTimeStyles.None, out deadline))
+            {
+                Console.WriteLine($"Deadline set to: {deadline.ToString("MM/dd/yyyy HH:mm")}");
+            }
+            else
+            {
+                Console.WriteLine("Invalid deadline format. Task created without deadline.");
+                hasDeadline = false;
+            }
         }
 
-    } while (!hasValidDeadlineInput);
+        Task newTask;
+        newTask = new SimpleTask(taskName, hasDeadline, deadline);
 
-    bool hasDeadline = hasDeadlineInput == "yes";
-    DateTime deadline = DateTime.MinValue;
-
-    if (hasDeadline)
-    {
-        Console.Write("Enter the deadline (format: MM/dd/yyyy HH:mm): ");
-        string deadlineInput = Console.ReadLine();
-
-        if (DateTime.TryParseExact(deadlineInput, "MM/dd/yyyy HH:mm", null, System.Globalization.DateTimeStyles.None, out deadline))
-        {
-            Console.WriteLine($"Deadline set to: {deadline.ToString("MM/dd/yyyy HH:mm")}");
-        }
-        else
-        {
-            Console.WriteLine("Invalid deadline format. Task created without deadline.");
-            hasDeadline = false;
-        }
+        Console.WriteLine("Task created successfully!");
+        tasks.Add(newTask);
     }
-
-    Console.WriteLine("Task created successfully!");
-    tasks.Add(new Task(taskName, hasDeadline, deadline));
-}
 
     static void ShowTaskList()
     {
@@ -112,7 +115,7 @@ class TaskManager
             return;
         }
 
-        Console.WriteLine("\nTask List:");
+        Console.WriteLine("Task List:");
         for (int i = 0; i < tasks.Count; i++)
         {
             Console.Write($"{i + 1}. {tasks[i].Name}");
@@ -154,17 +157,17 @@ class TaskManager
             return;
         }
 
-        tasks[taskIndex].Completed = true;
+        tasks[taskIndex].MarkAsCompleted();
         Console.WriteLine("Task completed successfully!");
     }
 
     static void EditTask()
     {
-        // Implement the logic for edit a task
+        // Implement the logic for editing a task (in progress)
     }
 
     static void DeleteTask()
     {
-        // Implement the logic for deleting a task
+        // Delete task in progress
     }
 }
