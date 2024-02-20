@@ -163,11 +163,79 @@ class TaskManager
 
     static void EditTask()
     {
-        // Implement the logic for editing a task (in progress)
+        ShowTaskList();
+
+        if (tasks.Count == 0)
+        {
+            Console.WriteLine("No tasks available to edit.");
+            return;
+        }
+
+        Console.Write("Enter the number of the task you want to edit: ");
+        int taskIndex = Convert.ToInt32(Console.ReadLine()) - 1;
+
+        if (taskIndex < 0 || taskIndex >= tasks.Count)
+        {
+            Console.WriteLine("Invalid task number.");
+            return;
+        }
+
+        Console.WriteLine("Editing Task:");
+        Console.WriteLine($"Name: {tasks[taskIndex].Name}");
+        Console.WriteLine($"Has Deadline: {tasks[taskIndex].HasDeadline}");
+        Console.WriteLine($"Deadline: {tasks[taskIndex].Deadline.ToString("MM/dd/yyyy HH:mm")}");
+        Console.WriteLine();
+
+        Console.Write("Enter the new name (or press Enter to keep the current name): ");
+        string newName = Console.ReadLine();
+        if (!string.IsNullOrEmpty(newName))
+        {
+            tasks[taskIndex].Name = newName;
+            Console.WriteLine("Name updated successfully!");
+        }
+
+        Console.Write("Update Deadline? (yes/no): ");
+        string updateDeadlineInput = Console.ReadLine().ToLower();
+        if (updateDeadlineInput == "yes")
+        {
+            Console.Write("Enter the new deadline (format: MM/dd/yyyy HH:mm): ");
+            string newDeadlineInput = Console.ReadLine();
+
+            if (DateTime.TryParseExact(newDeadlineInput, "MM/dd/yyyy HH:mm", null, System.Globalization.DateTimeStyles.None, out DateTime newDeadline))
+            {
+                tasks[taskIndex].HasDeadline = true;
+                tasks[taskIndex].Deadline = newDeadline;
+                Console.WriteLine($"Deadline updated to: {newDeadline.ToString("MM/dd/yyyy HH:mm")}");
+            }
+            else
+            {
+                Console.WriteLine("Invalid deadline format. Deadline remains unchanged.");
+            }
+        }
+
+        Console.WriteLine("Task updated successfully!");
     }
 
     static void DeleteTask()
     {
-        // Delete task in progress
+        ShowTaskList();
+
+        if (tasks.Count == 0)
+        {
+            Console.WriteLine("No tasks available to delete.");
+            return;
+        }
+
+        Console.Write("Enter the number of the task you want to delete: ");
+        int taskIndex = Convert.ToInt32(Console.ReadLine()) - 1;
+
+        if (taskIndex < 0 || taskIndex >= tasks.Count)
+        {
+            Console.WriteLine("Invalid task number.");
+            return;
+        }
+
+        tasks.RemoveAt(taskIndex);
+        Console.WriteLine("Task deleted successfully!");
     }
 }
